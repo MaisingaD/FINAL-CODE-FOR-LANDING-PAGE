@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maisinga Digitals</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* GENERAL */
+body, html { margin:0; padding:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#1e3a8a; color:#fff; overflow-x:hidden; position:relative; transition: all 0.3s ease;}
+body{ opacity:0; animation: pageFade 1.2s forwards ease-in; }
+
+/* PAGE FADE-IN */
+@keyframes pageFade{ to{ opacity:1; } }
+
+/* OFFER BANNER */
+#offerBanner{
+  background:#ff7f50; color:white; text-align:center; padding:10px 20px; font-weight:bold;
+  position:fixed; top:0; left:0; width:100%; z-index:1000; animation: slideDown 1s forwards;
+}
+@keyframes slideDown{ 0%{ top:-50px; } 100%{ top:0; } }
+
+/* HEADER */
+header{
+  text-align:center;
+  padding:120px 20px 40px 20px;
+  overflow:hidden;
+  position:relative;
+  z-index:20;
+}
+header img#companyLogo{
+  width:120px; height:auto; margin-bottom:20px; display:block;
+  margin-left:auto; margin-right:auto;
+  opacity:0; animation:logoFade 1s forwards ease-in-out 0.3s;
+}
+header h1{ font-size:3rem; font-weight:bold; transform:translateY(-100px); opacity:0; animation: titleDrop 1s forwards ease-out 0.5s; }
+header p{ font-size:1.2rem; margin-top:10px; font-style:italic; opacity:0; animation: subtitleFade 1s forwards ease-out 1.5s; }
+
+/* CTA BOX */
+#ctaBox{ margin-top:30px; background:#fff; color:#1e3a8a; padding:25px 35px; border-radius:15px; font-weight:bold; font-size:1.4rem; max-width:450px; margin-left:auto; margin-right:auto; opacity:0; transform:translateY(20px); animation:ctaFade 1s forwards ease-out 2.2s, pulse 2s infinite 4s; text-align:center; box-shadow:0 0 20px rgba(255,255,255,0.5); }
+
+/* BUTTONS */
+.button-container{ display:flex; flex-direction:column; gap:25px; margin:40px auto; max-width:450px; opacity:0; transform:translateY(20px); animation: fadeUp 1s forwards ease-out 2.8s; position:relative; z-index:50; }
+@keyframes fadeUp{ to{ opacity:1; transform:translateY(0);} }
+.btn{ padding:20px 40px; font-size:1.5rem; border:none; border-radius:15px; cursor:pointer; font-weight:bold; color:#fff; background:#1e3a8a; box-shadow:0 5px 15px rgba(0,0,0,0.3); display:flex; justify-content:center; align-items:center; gap:15px; transition:0.4s all; position:relative; overflow:hidden; }
+.btn:hover{ transform:scale(1.05); box-shadow:0 8px 25px rgba(255,255,255,0.6); }
+.btn::after{ content:""; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.1); opacity:0; transition:0.4s; }
+.btn:hover::after{ opacity:1; }
+
+/* SUB BUTTONS */
+.sub-btn{ padding:10px 20px; margin:5px; border:none; border-radius:10px; font-weight:bold; cursor:pointer; transition:0.3s all; }
+.sub-btn:hover{ transform:scale(1.05); box-shadow:0 0 10px rgba(255,255,255,0.6); }
+
+/* STATS */
+.stats{ display:flex; justify-content:center; gap:40px; margin-top:40px; flex-wrap:wrap; text-align:center; }
+.stats div{ font-size:1.2rem; }
+.stats div span{ font-size:2rem; font-weight:bold; display:block; }
+
+/* WHITE SECTIONS */
+section{ padding:50px 20px; max-width:1000px; margin:0 auto; border-radius:15px; opacity:0; transform:translateY(20px); transition: all 1s ease;}
+section.visible{ opacity:1; transform:translateY(0);}
+.white-section{ background:#fff; color:#1e3a8a; }
+
+/* MAIN NEWSLETTER */
+#mainNewsletter{ background:#fff; color:#1e3a8a; padding:30px; border-radius:15px; text-align:center; margin-bottom:50px;}
+#mainNewsletter input{ padding:10px; width:60%; border-radius:5px; border:1px solid #1e3a8a; margin-right:10px;}
+#mainNewsletter button{ padding:10px 20px; border:none; border-radius:5px; background:#1e3a8a; color:white; cursor:pointer;}
+
+/* CONTACT BUTTONS */
+.contact-buttons a, .social-buttons a, .email-btn a{ padding:15px 25px; border-radius:10px; font-weight:bold; text-decoration:none; display:inline-block; margin:5px; }
+.contact-buttons a i, .social-buttons a i, .email-btn a i{ margin-right:8px; }
+/* SOCIAL ICONS WHITE */
+.social-buttons a i{ color:white !important; }
+
+/* FOOTER */
+footer{ background:#111; padding:20px; text-align:center; font-size:0.9rem; }
+
+/* NEWSLETTER POPUP */
+#newsletterModal{ display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000;}
+#newsletterModal .modal-content{ background:#fff; color:#1e3a8a; padding:30px; border-radius:15px; text-align:center; position:relative;}
+#newsletterModal input{ padding:10px; width:70%; border:none; border-radius:5px; margin-right:10px; border:1px solid #1e3a8a;}
+#newsletterModal button{ padding:10px 20px; border:none; border-radius:5px; background:#1e3a8a; color:white; cursor:pointer; font-weight:bold;}
+#newsletterModal .close-btn{ position:absolute; top:10px; right:15px; font-size:1.5rem; cursor:pointer; color:#1e3a8a; }
+
+/* BUBBLES */
+.bubble{ position:absolute; border-radius:50%; opacity:0.4; pointer-events:none; animation: floatUp 10s linear forwards; z-index:10; }
+@keyframes floatUp{ 0%{ transform: translateY(0) translateX(0);} 100%{ transform: translateY(-100vh) translateX(50px);} }
+
+/* ANIMATIONS */
+@keyframes logoFade { to{ opacity:1; } }
+@keyframes titleDrop{ to{ transform:translateY(0); opacity:1; } }
+@keyframes subtitleFade{ to{ opacity:1; } }
+@keyframes ctaFade{ to{ opacity:1; transform:translateY(0); } }
+@keyframes pulse{ 0%{ transform:scale(1); box-shadow:0 0 15px rgba(255,255,255,0.5); } 50%{ transform:scale(1.05); box-shadow:0 0 25px rgba(255,255,255,0.7); } 100%{ transform:scale(1); box-shadow:0 0 15px rgba(255,255,255,0.5); } }
+
+/* FAQ */
+.faq-section h2{ text-align:center; margin-bottom:20px; }
+.faq-item{ background:#fff; color:#1e3a8a; margin-bottom:10px; border-radius:10px; padding:15px; cursor:pointer; }
+.faq-item p{ display:none; margin-top:10px; }
+
+/* TEXTILE IMAGES */
+.textile-images img{ width:45%; margin:10px; border-radius:15px; }
+
+/* RESPONSIVE */
+@media(max-width:768px){ header h1{ font-size:2.5rem;} .btn{ font-size:1.3rem; padding:15px 30px;} .stats{flex-direction:column; gap:20px;} .sub-btn{width:90%;} .textile-images img{ width:90%; } }
+</style>
+</head>
+<body>
+
+<div id="offerBanner">Limited Offer: First 10 Design Requests Today Get 10% Off!</div>
+
+<header>
+  <img id="companyLogo" src="YOUR_LOGO_LINK_HERE" alt="Maisinga Digitals Logo">
+  <h1>Maisinga Digitals</h1>
+  <p>We Simplify Life Digitally</p>
+  <div id="ctaBox">What do you want to do today?</div>
+</header>
+
+<div class="button-container">
+  <!-- Textiles -->
+  <div>
+    <button class="btn" onclick="trackClick('Textiles');window.location.href='YOUR_ECOMMERCE_LINK_HERE'">
+      <i class="fas fa-tshirt"></i> Buy Textiles
+    </button>
+    <div class="textile-images">
+      <a href="/storage/emulated/0/Android/media/com.whatsapp.w4b/WhatsApp Business/Media/WhatsApp Business Images/IMG-20251127-WA0011.jpg"><img src="/storage/emulated/0/Android/media/com.whatsapp.w4b/WhatsApp Business/Media/WhatsApp Business Images/IMG-20251127-WA0011.jpg" alt="Textile 1"></a>
+      <a href="LINK_TO_IMAGE_2_HERE"><img src="PLACEHOLDER_IMAGE_2" alt="Textile 2"></a>
+    </div>
+  </div>
+
+  <!-- Data -->
+  <div>
+    <button class="btn"><i class="fas fa-mobile-alt"></i> Buy Mobile Data / Airtime</button>
+    <div class="service-preview">
+      <button class="sub-btn" style="background:#FFD700;color:white;" onclick="window.location.href='https://maisingadigitals.com.ng/mtn'">Buy MTN Data</button>
+      <button class="sub-btn" style="background:#FF0000;color:white;" onclick="window.location.href='https://maisingadigitals.com.ng/airtel'">Buy Airtel Data</button>
+    </div>
+  </div>
+
+  <!-- Design -->
+  <div>
+    <button class="btn"><i class="fas fa-pencil-ruler"></i> Graphic Design Services</button>
+    <div class="service-preview">
+      <button class="sub-btn" onclick="window.open('https://wa.me/2347048199309?text=I%20need%20a%20Logo','_blank')">I need a Logo</button>
+      <button class="sub-btn" onclick="window.open('https://wa.me/2347048199309?text=I%20need%20a%20Flyer','_blank')">I need a Flyer</button>
+      <button class="sub-btn" onclick="window.open('https://wa.me/2347048199309?text=I%20need%20a%20Banner','_blank')">I need a Banner</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK STATS -->
+<div class="stats fade-section">
+  <div><span>100+</span> Textile Clients</div>
+  <div><span>50k+</span> Data Top-ups</div>
+  <div><span>200+</span> Designs Completed</div>
+</div>
+
+<!-- ABOUT, MISSION, VISION -->
+<section class="fade-section white-section">
+  <h2>About Maisinga Digitals</h2>
+  <p>Maisinga Digitals is your trusted hub for textiles, mobile data services, and professional graphic design solutions. We simplify life digitally for individuals and businesses.</p>
+</section>
+
+<section class="fade-section">
+  <h2>Our Mission</h2>
+  <p>Provide seamless, reliable, and innovative solutions that save time and enhance experiences for our customers.</p>
+</section>
+
+<section class="fade-section white-section">
+  <h2>Our Vision</h2>
+  <p>To be Nigeria’s leading multi-service digital hub, bridging technology, commerce, and creativity.</p>
+</section>
+
+<!-- FAQ -->
+<section class="fade-section white-section faq-section">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <strong>Textiles:</strong>
+    <p>Do you deliver textiles locally or nationwide? Answer goes here.</p>
+  </div>
+  <div class="faq-item">
+    <strong>Data:</strong>
+    <p>How fast is MTN/Airtel top-up? Answer goes here.</p>
+  </div>
+  <div class="faq-item">
+    <strong>Design:</strong>
+    <p>How long does a design take? Answer goes here.</p>
+  </div>
+</section>
+
+<!-- MAIN NEWSLETTER -->
+<section id="mainNewsletter" class="fade-section">
+  <h2>Subscribe to Our Newsletter</h2>
+  <p>Get updates on services and offers!</p>
+  <input type="email" id="mainEmail" placeholder="Enter your email">
+  <button onclick="subscribeMain()">Subscribe</button>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="fade-section">
+  <h2>Contact Us</h2>
+  <div class="contact" style="text-align:center;">
+    <div class="contact-buttons">
+      <a href="https://wa.me/2347048199309" target="_blank" style="background:#25D366; color:white;"><i class="fab fa-whatsapp"></i> Message on WhatsApp</a>
+      <a href="tel:+2347048199309" style="background:#1e3a8a; color:white;"><i class="fas fa-phone-alt"></i> Call Now</a>
+    </div>
+    <div class="email-btn">
+      <a href="mailto:info@maisingadigitals.com" target="_blank" style="background:#ff7f50; color:white;"><i class="fas fa-envelope"></i> Send Email</a>
+    </div>
+    <div class="social-buttons">
+      <a href="https://maisingadigitals.com.ng" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://maisingadigitals.com.ng" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="https://maisingadigitals.com.ng" target="_blank"><i class="fab fa-tiktok"></i></a>
+    </div>
+  </div>
+</section>
+
+<footer>&copy; 2025 | Designed by Maisinga Digitals</footer>
+
+<!-- NEWSLETTER POPUP -->
+<div id="newsletterModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <h2>Subscribe to our Newsletter</h2>
+    <p>Get updates on services and offers!</p>
+    <input type="email" id="modalEmail" placeholder="Enter your email">
+    <button onclick="subscribeModal()">Subscribe</button>
+  </div>
+</div>
+
+<script>
+// FADE-IN SECTIONS ON SCROLL
+const fadeSections = document.querySelectorAll('.fade-section');
+window.addEventListener('scroll', ()=>{
+  fadeSections.forEach(sec=>{
+    const top = sec.getBoundingClientRect().top;
+    if(top < window.innerHeight - 100){ sec.classList.add('visible'); }
+  });
+});
+
+// BUTTON TRACKING
+function trackClick(name){ console.log('Button clicked:', name); }
+
+// NEWSLETTER
+function subscribeMain(){ const email=document.getElementById('mainEmail').value; if(email){ console.log('Main email:', email); alert('Thank you!'); } }
+window.onload=()=>{ 
+  setTimeout(()=>{ document.getElementById('newsletterModal').style.display='flex'; },3000);
+  for(let i=0;i<20;i++){ createBubble(); } // bubbles on start
+}
+function closeModal(){ document.getElementById('newsletterModal').style.display='none'; }
+function subscribeModal(){ const email=document.getElementById('modalEmail').value; if(email){ console.log('Modal email:', email); alert('Thank you!'); closeModal(); } }
+
+// FLOATING BUBBLES
+function createBubble(){
+  const bubble=document.createElement('div');
+  bubble.className='bubble';
+  const size=Math.random()*30+10+'px';
+  bubble.style.width=size; bubble.style.height=size;
+  bubble.style.left=Math.random()*window.innerWidth+'px';
+  bubble.style.top=Math.random()*window.innerHeight+'px';
+  bubble.style.background='rgba(255,255,255,0.3)';
+  document.body.appendChild(bubble);
+  setTimeout(()=>{ bubble.remove(); },10000);
+}
+window.addEventListener('scroll', ()=>{ createBubble(); });
+
+// FAQ toggle
+const faqs=document.querySelectorAll('.faq-item');
+faqs.forEach(f=>{
+  f.addEventListener('click', ()=>{
+    const p=f.querySelector('p');
+    if(p.style.display==='block'){ p.style.display='none'; } else { p.style.display='block'; }
+  });
+});
+</script>
+
+</body>
+</html>
